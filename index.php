@@ -1,3 +1,19 @@
+<?php
+session_start();
+if(isset($_POST['apply'])){
+    $job_id = $_POST['job_id'];
+    if(isset($_SESSION['UserID'])){
+
+        echo "<script>alert('has been apply')</script>";
+    }else{
+        header("location: login.php");
+    }
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -106,7 +122,11 @@
 						<li class="tag__item"><i class="fas fa-tag mr-2"></i>Maroc</li>
 						<li class="tag__item"><i class="fas fa-clock mr-2"></i>55 mins.</li>
 						<li class="tag__item play green">
-							<a href="#"><i class="fas fa-play mr-2"></i>APPLY NOW</a>
+                            <form action="" method="post">
+                                <input type="hidden" name="job_id">
+                                <button type="submit" name="apply">APPLY NOW</button>
+                            </form>
+
 						</li>
 					</ul>
 				</div>

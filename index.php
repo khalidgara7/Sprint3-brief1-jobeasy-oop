@@ -55,7 +55,7 @@ if(isset($_POST['apply'])){
 							<a class="nav-link" href="#">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Features</a>
+							<a class="nav-link" href="controler/profile.php">Profile</a>
 						</li>
 
 						<li class="nav-item dropdown">
@@ -124,7 +124,7 @@ if(isset($_POST['apply'])){
 						<li class="tag__item play green">
                             <form action="" method="post">
                                 <input type="hidden" name="job_id">
-                                <button type="submit" name="apply">APPLY NOW</button>
+                                <button class="" type="submit" name="apply">APPLY NOW</button>
                             </form>
 
 						</li>

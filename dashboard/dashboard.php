@@ -1,3 +1,11 @@
+<?php
+require "../controler/statistiques.php";
+$statistic = new Statistiques();
+$countOffer = $statistic->countOffer();
+$countactifOffer = $statistic->countOfferactif();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,7 +116,7 @@
                                     <div>
                                         <p class="mb-0">Offres</p>
                                         <div class="mt-4">
-                                            <h3><strong>18</strong></h3>
+                                            <h3><strong><?=$countOffer?></strong></h3>
                                             
                                         </div>
                                     </div>
@@ -127,7 +135,7 @@
                                     <div>
                                         <p class="mb-0">Active Offres</p>
                                         <div class="mt-4">
-                                            <h3><strong>132</strong></h3>
+                                            <h3><strong><?=$countactifOffer?></strong></h3>
                                            
                                         </div>
                                     </div>

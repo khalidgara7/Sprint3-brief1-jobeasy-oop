@@ -129,7 +129,7 @@
             ?>
 			<article class="postcard light green">
 				<a class="postcard__img_link" href="#">
-					<img class="postcard__img" src="./dashboard/img/uploads/<?= @$offer['Image'] ?>" alt="Image Title" />
+					<img class="postcard__img" src="./dashboard/img/uploads/<?=$offer['Image']?>" alt="Image Title" />
 				</a>
 				<div class="postcard__text t-dark">
 					<h3 class="postcard__title green"><a href="#"><?= $offer['TitreOffre'] ?></a></h3>
@@ -151,8 +151,7 @@
                                         if($displycrud->isUserAlreadyApplyToOffre($_SESSION["UserID"], $offer['OffreID']))
                                             echo 'disabled = "disabled"'
                                         ?>
-                                >
-                                    APPLY NOW
+                                >APPLY NOW
                                 </button>
                             </form>
 

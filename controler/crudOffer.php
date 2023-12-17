@@ -49,7 +49,7 @@ class CrudOffer extends Basedonne {
      **        0 if not
      **/
     public function isUserAlreadyApplyToOffre($userId, $OffreId) {
-        $query = "SELECT count(*) as size from `candidature` c where c.UserId = $userId AND OffreId = $OffreId";
+        $query = "SELECT count(*) as size from `candidature` c where c.UserID = '$userId' AND OffreId = '$OffreId'";
         $rslt = mysqli_query($this->conn, $query);
         $row = mysqli_fetch_assoc($rslt);
         return $row['size'];
@@ -65,6 +65,7 @@ class CrudOffer extends Basedonne {
         }
         return $table;
     }
+
 }
 if(isset($_POST['job_id'])){
     $iduser = $_SESSION['UserID'];
@@ -117,10 +118,10 @@ function uploadimage()
 
             if ($img_size > 17000000)
             {
-                echo "<pre>";
+                /*echo "<pre>";
                 print_r($_FILES['my_image']);
                 echo "</pre>";
-                die();
+                die();*/
                 $_SESSION['Error'] = "Sorry, your file is too large.";
                 header('location: ../dashboard/dashboard.php');
             }

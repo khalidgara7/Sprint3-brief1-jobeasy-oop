@@ -3,8 +3,6 @@
 
 $crud = new CrudOffer();
 $offers = $crud->getalloffers();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -51,8 +49,6 @@ $offers = $crud->getalloffers();
                 </ul>
                 <div class="line"></div>
                 <a href="#" class="sidebar_link"><img src="img/settings.svg" alt="">Settings</a>
-
-
             </div>
         </aside>
         <div class="main">
@@ -158,11 +154,8 @@ $offers = $crud->getalloffers();
                     <?php
                     }
                     ?>
-
                     </tbody>
                 </table>
-
-
             </section>
             
         </div>

@@ -18,8 +18,16 @@ session_start();
     <h2>Personnel Information</h2>
     <form action="auth.php" method="POST">
         <div class="input-box" style="margin-top: 1.5rem;">
-            <label> *Update your name* </label>
+            <label> Update your name </label>
             <input type="text" name="name" value="<?= @$_SESSION['name']?>" required>
+        </div>
+        <div class="input-box" style="margin-top: 1.5rem;">
+            <label> Change your Email </label>
+            <input type="text" name="email" value="<?= @$_SESSION['email']?>" required>
+        </div>
+        <div class="input-box" style="margin-top: 1.5rem;">
+            <label> Change your password </label>
+            <input type="text" name="password" value="" required>
         </div>
         <div class="input-box button" style="margin-top: 3rem;">
             <input type="submit" name="updateProfile" value="save change">
@@ -28,6 +36,7 @@ session_start();
         <div class="input-box  ">
             <input type="Submit" name="deleteAccount" value="delete account">
         </div>
+        <a href="../index.php" class="nav-link text-white-50"> <-Precedent </a>
 
     </form>
 </div>

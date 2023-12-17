@@ -1,15 +1,16 @@
 <?php
-session_start();
-if(isset($_POST['apply'])){
-    $job_id = $_POST['job_id'];
-    if(isset($_SESSION['UserID'])){
 
-        echo "<script>alert('has been apply')</script>";
-    }else{
-        header("location: login.php");
+    if(!session_id())
+        session_start();
+
+    if(isset($_POST['apply'])){
+       if(!isset($_SESSION ['UserID']))
+            header("location: login.php");
     }
-}
+    include "./controler/crudOffer.php";
 
+    $displycrud = new CrudOffer();
+    $offers = $displycrud->getalloffers();
 
 ?>
 
@@ -55,7 +56,7 @@ if(isset($_POST['apply'])){
 							<a class="nav-link" href="#">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="controler/profile.php">Profile</a>
+                            <a class="nav-link" href="controler/profile.php">Profile</a>
 						</li>
 
 						<li class="nav-item dropdown">
@@ -70,9 +71,26 @@ if(isset($_POST['apply'])){
 						<span class="nav-item active">
 							<a class="nav-link" href="#">EN</a>
 						</span>
+                        <?php
+                        if (!@$_SESSION['UserID'])
+                            {
+
+
+                        ?>
 						<li class="nav-item">
 							<a class="nav-link" href="login.php">Login</a>
 						</li>
+                        <?php
+                            }else{
+
+
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">Log out</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
 					</ul>
 				</div>
 			</div>
@@ -86,7 +104,7 @@ if(isset($_POST['apply'])){
 		<h2>Find Your Dream Job</h2>
 		<form class="form-inline">
 			<div class="form-group mb-2">
-				<input type="text" name="keywords" placeholder="Keywords">
+				<input type="text" name="keywords" id="keywords" placeholder="Keywords" onkeyup="searchOfferByKeywords()">
 
 
 			</div>
@@ -96,63 +114,55 @@ if(isset($_POST['apply'])){
 			<div class="form-group mx-sm-3 mb-2">
 				<input type="text" name="company" placeholder="Company">
 			</div>
-			<button type="submit" class="btn btn-primary mb-2">Search</button>
+			<button type="button" class="btn btn-primary mb-2">Search</button>
 		</form>
 	</section>
 
 	<!--------------------------  card  --------------------->
 	<section class="light">
 		<h2 class="text-center py-3">Latest Job Listings</h2>
-		<div class="container py-2">
+		<div class="container py-2" id="offer-container">
 
+            <?php
+                foreach ($offers as $offer)
+                {
+            ?>
 			<article class="postcard light green">
 				<a class="postcard__img_link" href="#">
-					<img class="postcard__img" src="https://picsum.photos/300/300" alt="Image Title" />
+					<img class="postcard__img" src="./dashboard/img/uploads/<?= @$offer['Image'] ?>" alt="Image Title" />
 				</a>
 				<div class="postcard__text t-dark">
-					<h3 class="postcard__title green"><a href="#">Experienced Web Developer in Python .</a></h3>
+					<h3 class="postcard__title green"><a href="#"><?= $offer['TitreOffre'] ?></a></h3>
 					<div class="postcard__subtitle small">
 						<time datetime="2020-05-25 12:00:00">
-							<i class="fas fa-calendar-alt mr-2"></i>Mon, May 26th 2023
+							<i class="fas fa-calendar-alt mr-2"></i><?= $offer['DatePublication'] ?>
 						</time>
 					</div>
 					<div class="postcard__bar"></div>
-					<div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim,!</div>
+					<div class="postcard__preview-txt"><?= $offer['DescriptionOffre'] ?></div>
 					<ul class="postcard__tagbox">
-						<li class="tag__item"><i class="fas fa-tag mr-2"></i>Maroc</li>
+						<li class="tag__item"><i class="fas fa-tag mr-2"></i><?= $offer['Localisation'] ?></li>
 						<li class="tag__item"><i class="fas fa-clock mr-2"></i>55 mins.</li>
 						<li class="tag__item play green">
                             <form action="" method="post">
-                                <input type="hidden" name="job_id">
-                                <button class="" type="submit" name="apply">APPLY NOW</button>
+                                <input type="hidden" name="job_id" value="<?=@$offer['OffreID']?>">
+                                <button class="" type="submit" name="apply"
+                                        <?php
+                                        if($displycrud->isUserAlreadyApplyToOffre($_SESSION["UserID"], $offer['OffreID']))
+                                            echo 'disabled = "disabled"'
+                                        ?>
+                                >
+                                    APPLY NOW
+                                </button>
                             </form>
 
 						</li>
 					</ul>
 				</div>
 			</article>
-			<article class="postcard light yellow">
-				<a class="postcard__img_link" href="#">
-					<img class="postcard__img" src="https://picsum.photos/300/300" alt="Image Title" />
-				</a>
-				<div class="postcard__text t-dark">
-					<h3 class="postcard__title yellow"><a href="#">Web Designer / Developer</a></h3>
-					<div class="postcard__subtitle small">
-						<time datetime="2020-05-25 12:00:00">
-							<i class="fas fa-calendar-alt mr-2"></i>Mon, May 25th 2023
-						</time>
-					</div>
-					<div class="postcard__bar"></div>
-					<div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim,!</div>
-					<ul class="postcard__tagbox">
-						<li class="tag__item"><i class="fas fa-tag mr-2"></i>France</li>
-						<li class="tag__item"><i class="fas fa-clock mr-2"></i> 3 mins.</li>
-						<li class="tag__item play yellow">
-							<a href="#"><i class="fas fa-play mr-2"></i>APPLY NOW</a>
-						</li>
-					</ul>
-				</div>
-			</article>
+            <?php
+                }
+            ?>
 		</div>
 	</section>
 
@@ -163,8 +173,14 @@ if(isset($_POST['apply'])){
 		<p>© 2023 JobEase </p>
 	</footer>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+<script src="./js/index.js"></script>
 
 </html>

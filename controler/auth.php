@@ -21,6 +21,7 @@ class Authentication extends Basedonne {
              $_SESSION['UserID'] = $user['UserID'];
              $_SESSION['Role'] = $user['Role'];
              $_SESSION['name'] = $user['NomUtilisateur'];
+             $_SESSION['email'] = $user['Email'];
              if($user['Role'] == "admin"){
                  header("location: ../dashboard/dashboard.php");
              }elseif ($user['Role'] == "condidat"){
@@ -57,10 +58,14 @@ class Authentication extends Basedonne {
 
             $UserID = $_SESSION['UserID'];
             $name = $_POST['name'];
-            $update = "UPDATE utilisateur  SET NomUtilisateur='$name' WHERE UserID = '$UserID'";
+            $email = $_POST['email'];
+            $psw = $_POST['password'];
+            $hash = password_hash($psw, PASSWORD_DEFAULT);
+            $update = "UPDATE utilisateur  SET NomUtilisateur='$name', Email = '$email', MotDePasse = '$hash' WHERE UserID = '$UserID'";
             $res = mysqli_query($this->conn, $update);
             if($res){
                 $_SESSION['name'] = $name;
+                $_SESSION['email'] = $email;
                 header('location: profile.php');
             }else{
                 echo "<script> alert('doesn\'t exist') </script>";
@@ -100,4 +105,3 @@ if(isset($_POST['updateProfile'])){
 if (isset($_POST['deleteAccount'])){
     $auth->deleteaccount();
 }
-

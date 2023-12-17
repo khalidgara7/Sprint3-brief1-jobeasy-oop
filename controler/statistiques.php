@@ -14,10 +14,17 @@ class Statistiques extends Basedonne {
     }
     public function countOfferactif(){
         $this->connection();
-        $actifoffer = "SELECT count(*) as actifoffres FROM `offreemploi` where visibilite = 'actif';";
+        $actifoffer = "SELECT count(*) as actifoffres FROM `offreemploi` where visibilite = 'actif'";
         $result = $this->conn->query($actifoffer);
         $row = mysqli_fetch_assoc($result);
         return $row['actifoffres'];
+    }
+    public function countofferinactif(){
+        $this->connection();
+        $inactifoffer = "select count(*) as inactifoffer from offreemploi where visibilite = 'inactif'";
+        $rsult = $this->conn->query($inactifoffer);
+        $row = mysqli_fetch_assoc($rsult);
+        return $row['inactifoffer'];
     }
 }
 

@@ -1,8 +1,16 @@
 <?php
 require "../controler/statistiques.php";
+session_start();
+if (isset($_SESSION['UserID'])){
+    $userid = $_SESSION['UserID'];
+}else{
+    header("location: ../login.php");
+}
+
 $statistic = new Statistiques();
 $countOffer = $statistic->countOffer();
 $countactifOffer = $statistic->countOfferactif();
+$countinactifoffer = $statistic->countofferinactif();
 
 
 ?>
@@ -101,7 +109,7 @@ $countactifOffer = $statistic->countOfferactif();
                             <div class="dropdown-menu dropdown-menu-end position-absolute">
                                 <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="#">Account Setting</a>
-                                <a class="dropdown-item" href="/PeoplePerTask/project/pages/index.html">Log out</a>
+                                <a class="dropdown-item" href="../login.php">Log out</a>
                             </div>
                         </li>
                     </ul>
@@ -114,7 +122,7 @@ $countactifOffer = $statistic->countOfferactif();
                             <div class="card-body  p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Offres</p>
+                                        <p class="mb-0">Offers</p>
                                         <div class="mt-4">
                                             <h3><strong><?=$countOffer?></strong></h3>
                                             
@@ -133,7 +141,7 @@ $countactifOffer = $statistic->countOfferactif();
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Active Offres</p>
+                                        <p class="mb-0">Active Offers</p>
                                         <div class="mt-4">
                                             <h3><strong><?=$countactifOffer?></strong></h3>
                                            
@@ -152,9 +160,9 @@ $countactifOffer = $statistic->countOfferactif();
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Nombre visiteurs</p>
+                                        <p class="mb-0">Inactive Offers</p>
                                         <div class="mt-4">
-                                            <h3><strong>12</strong></h3>
+                                            <h3><strong><?=$countinactifoffer?></strong></h3>
                                             <!-- <p><strong></strong> Completed</p> -->
                                         </div>
                                     </div>
@@ -171,7 +179,7 @@ $countactifOffer = $statistic->countOfferactif();
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Offres approuver</p>
+                                        <p class="mb-0">Offers Approuver</p>
                                         <div class="mt-4">
                                             <h3><strong>76%</strong></h3>
                                             <p><strong>57%</strong> Completed</p>
@@ -235,21 +243,6 @@ $countactifOffer = $statistic->countOfferactif();
                                 <p>Create new offre</p>
                                 <img class="cursor " id="add_admin_task" src="img/inactive.svg" alt="icon">
                             </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
-                                <p>Finish offre update</p>
-                                <img src="img/warning.svg" alt="icon">
-                            </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
-                                <p>Create new offre example</p>
-                                <img src="img/successnew.svg" alt="icon">
-                            </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
-                                <p>Update offre report</p>
-                                <img src="img/default.svg" alt="icon">
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -259,43 +252,50 @@ $countactifOffer = $statistic->countOfferactif();
     <!-- edit modal -->
     <div class="modal">
         <div class="modal-content" >
-            <form id="forms">
+            <form  method="POST" action="../controler/crudOffer.php" enctype="multipart/form-data">
                 <!-- 2 column grid layout with text inputs for the first and last names -->
                 <div class="mb-4">
+                      <label class="form-label"  >Offre title</label>
+                      <input type="text" name="title" class="form-control task-desc" >
+                    
+                </div>
+                <div class="mb-4">
                       <label class="form-label" >Offre description</label>
-                      <input type="text" class="form-control task-desc" >
+                      <input type="text" name="description" class="form-control task-desc" >
                     
                 </div>
                 <div class="mb-4">
-                      <label class="form-label" >Offre title</label>
-                      <input type="text" class="form-control task-desc" >
-                    
-                </div>
-                <div class="mb-4">
-                      <label class="form-label" >Offre company</label>
-                      <input type="text" class="form-control task-desc" >
+                      <label class="form-label" >Enterprise</label>
+                      <input type="text" name="enterprise" class="form-control task-desc" >
                     
                 </div>
                 <div class="mb-4">
                       <label class="form-label" >Offre Location</label>
-                      <input type="text" class="form-control task-desc" >
+                      <input type="text" name="local" class="form-control task-desc" >
                     
                 </div>
               
                 <!-- select input -->
                 <div class="mb-4">
                     <label class="form-label">Status</label>
-                        <select class="form-control" name="task status" id="status">
-                            <option value="img/default.svg">Default</option>
-                            <option value="img/successnew.svg">New</option>
-                            <option value="img/warning.svg">Urgent</option>
+                        <select class="form-control" name="taskstatus" id="status">
+                            <option value="im">Default</option>
+                            <option value="img">New</option>
                         </select>
+                </div>
+
+
+
+                <div class="mb-4">
+                    <label class="form-label" >Image</label>
+                    <input type="file"= "form-control task-desc" name="my_image" >
+
                 </div>
               
 
                 <div class="d-flex w-100 justify-content-center">
-                <button type="submit" class="btn btn-success btn-block mb-4 me-4 save">Save Edit</button>
-                <div class="btn btn-danger btn-block mb-4 annuler">Annuler</div>
+                <button type="submit" name="Addoffer" class="btn btn-success btn-block mb-4 me-4 save">Save Edit</button>
+                <div class="btn btn-danger btn-block mb-4 annuler" >Annuler</div>
                 </div>
               </form>
                 

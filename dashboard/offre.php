@@ -147,8 +147,8 @@ $offers = $crud->getalloffers();
                             </td>
                             <td class="f_position"><?=$offer['visibilite']?></td>
                             <td class="">
-                                <img class="accept_task w-50" src="img/journal-check.svg" alt="icon" >
-                                <img class="delet_user w-50" src="img/journal-x.svg" alt="icon">
+                                <a href=""><img class="accept_task w-50" src="img/journal-check.svg" alt="icon" ></a>
+                                <a href="../dashboard/offre.php?dleteid=<?= $offer['OffreID']?>"><img class="delet_user w-50" src="img/journal-x.svg" alt="icon"></a>
                             </td>
                         </tr>
                     <?php

@@ -6,7 +6,7 @@ if(!session_id())
 class CrudOffer extends Basedonne {
     public function __construct()
     {
-        $this->connection(); // Ensure the connection is established
+        $this->connection();
     }
     public function insertionofers($title, $descrip, $entreprise, $local, $status, $image){
         $query1 = "INSERT INTO offreemploi (`TitreOffre` , `DescriptionOffre`, `Entreprise`, `Localisation`, `Statut`, `Image`) values ('$title', '$descrip', '$entreprise',' $local', '$status', '$image')";
@@ -28,7 +28,11 @@ class CrudOffer extends Basedonne {
         }
         return $table;
     }
-
+    // delete offers
+    public function deleteofere($id){
+        $data = "delete from offreemploi where OffreID = $id";
+        $result = mysqli_query($this->conn, $data);
+    }
     // get offers applying .
     public function offerapplying($iduser, $idoffer, $dateapplying){
         if($this->isUserAlreadyApplyToOffre($iduser, $idoffer)){
@@ -82,15 +86,26 @@ if(isset($_POST['Addoffer'])){
     $enterprise = $_POST['enterprise'];
     $local = $_POST['local'];
     $status = $_POST['taskstatus'];
-   $image = uploadimage();
+    $image = uploadimage();
     $func = new CrudOffer();
     $rsltfunc = $func->insertionofers($title, $description, $enterprise, $local, $status, $image);
     if ($rsltfunc){
-     header("location: ../dashboard/dashboard.php");
+        header("location: ../dashboard/dashboard.php");
     }else{
         echo "<script>alert('not save')</script>";
     }
 }
+// insertion des offers
+if(isset($_GET['dleteid'])){
+    $id = $_GET['dleteid'];
+    $objdelet = new CrudOffer();
+    $rsltfunc = $objdelet->deleteofere($id);
+    if ($rsltfunc){
+        header("../dashboard/offre.php");
+    }
+}
+// update des offers
+
 
 if(isset($_GET['searchText'])) {
     $crudOffer = new CrudOffer();
@@ -135,7 +150,6 @@ function uploadimage()
 
                 if (in_array($img_ex_lc, $allowed_exs))
                 {
-
                     $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
                     $img_upload_path = '../dashboard/img/uploads/'.$new_img_name;
                     move_uploaded_file($tmp_name, $img_upload_path);
@@ -150,7 +164,6 @@ function uploadimage()
         {
             $_SESSION['Error'] = 'unknown error occurred!';
             header('location: ../dashboard/dashboard.php');
-
         }
     }
     return $new_img_name;

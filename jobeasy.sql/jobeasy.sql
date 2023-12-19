@@ -27,11 +27,7 @@ CREATE TABLE Candidature (
          OffreID INT,
          Visibilite VARCHAR(10), -- (Approuvé, En attente)
          DateSoumission DATE,
-         FOREIGN KEY (UserID) REFERENCES Utilisateur(UserID),
-         FOREIGN KEY (OffreID) REFERENCES OffreEmploi(OffreID)
+ FOREIGN KEY (UserID) REFERENCES Utilisateur(UserID) ON DELETE CASCADE ON UPDATE CASCADE ,
+         FOREIGN KEY (OffreID) REFERENCES OffreEmploi(OffreID) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-INSERT INTO `OffreEmploi` (`OffreID`, `titreOffre`, `DescriptionOffre`, `Entreprise`, `Localisation`, `Statut`, `DatePublication`, `Image`) VALUES
-(1, 'Web Developer', 'Description of the job...', 'Tech Co', 'City A', 'Open', '2009-02-17', '/path/to/web_developer_image.jpg'),
-(2, 'Graphic Designer', 'Another job description...', 'Tech Co', 'City A', 'Open', '2009-02-17', 'path/to/graphic_designer_image.jpg');
 
